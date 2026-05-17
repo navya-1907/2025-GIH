@@ -1,19 +1,40 @@
+from sklearn import tree
+from sklearn.tree import DecisionTreeRegressor
+import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
-from sklearn.tree import export_graphviz
-for pydotplus import graph_from_dot_data
-form joblib import load
+import pydotplus
 
-model=load("model.joblib")
-features=["Gates","Fan-In","Fan-Out"]
+# Load dataset
+df = pd.read_csv("dataset.csv")
 
-data=export_graphviz(model, filled=True, feature_names=features, out_file=none)
+# Features and target
+X = df[['Gates', 'Fan-In', 'Fan-Out']]
+y = df['Depth']
 
-graph=graph_from_dot_data(dot_data)
-graph.write_pnd("DecisionTreeRegressor.png")
+# Train model
+model = DecisionTreeRegressor()
+model.fit(X, y)
 
-image=mpimg.imread("DecisionTreeRegressor.png")
-plt.figure(figsize=(12,8))
-plt.show(image)
-plt.axis("off")
+# Export tree data
+dot_data = tree.export_graphviz(
+    model,
+    out_file=None,
+    feature_names=X.columns,
+    filled=True,
+    rounded=True
+)
+
+# Create graph
+graph = pydotplus.graph_from_dot_data(dot_data)
+
+# Save png
+graph.write_png("tree.png")
+
+# Read image
+image = plt.imread("tree.png")
+
+# Show image
+plt.figure(figsize=(14,10))
+plt.imshow(image)
+plt.axis('off')
 plt.show()
