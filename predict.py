@@ -17,4 +17,4 @@ predicted_depths=loaded_model.predict(test_df)
 
 print("\nPredicted Combinational Depth for NEew RTL Designs:")
 for circuit, depth in zip(test_circuits.keys(), predicted_depths):
-  print(f"{circuit}: {depth:.2f})
+  print(f"{circuit}: {depth:.2f}")
